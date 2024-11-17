@@ -89,54 +89,23 @@ while True:
     print(f"Dealer's Card is : {first_card}")
     print(f"Multiplier : {first_multiplier:.2f}")
 
-    global choice
-
-    while True:
-        
-        choice = input("Will the next card be higher? (yes/no)\n==>")
-        if choice.strip().lower() in ['yes', 'y']:
-            choice = True
-            break
-        elif choice.strip().lower() in ['no', 'n']:
-            choice = False
-            break
-        else:
-            print("Invalid choice. Please type 'yes' or 'no'.")
-            continue
-
-    new_line()
+    choice = input("Will the next card be higher? (yes/no): ").strip().lower()
+    if choice not in ["yes", "no"]:
+        print("Invalid choice. Please type 'yes' or 'no'.")
+        continue
+    is_higher = (choice == "yes")
 
     player_card = users_card()
-    print(f"your card is : {player_card}")
-
+    print(f"Your card: {player_card}")
     new_line()
 
-    if choice == True:
-        
-        if (player_card>first_card):
-            
-            money1 = (boot*first_multiplier)-boot
-            
-            print(f"you won : {money1:.2f}")
-        
-        else:
-
-            money1 = -boot
-            print(f"you lost : {money1:.2f}")
-
-    elif choice == False:
-        
-        if (player_card<first_card):
-            
-            money1 = (boot*first_multiplier)-boot
-            
-            print(f"you won : {money1:.2f}")
-            
-        else:
-            money1 = -boot
-            print(f"you lost : {money1:.2f}")
-
-    money+=money1
+    if (is_higher and player_card > dealer_card) or (not is_higher and player_card < dealer_card):
+        winnings = boot * round_multiplier
+        money += winnings
+        print(f"You won! Gained {winnings - boot:.2f}.")
+    else:
+        money -= boot
+        print(f"You lost! Lost {boot:.2f}.")
 
     if money <= 0:
         print("Game Over! You've lost all your money :(")
